@@ -1,11 +1,9 @@
 import type { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { TOTP } from 'otplib';
+import { verifySync, generateSecret, generateURI } from 'otplib';
 import * as qrcode from 'qrcode';
 import { PrismaClient } from '@prisma/client';
-
-const authenticator = new TOTP();
 
 export interface AuthRequest extends Request {
   user?: {
@@ -33,7 +31,7 @@ export const login = async (req: Request, res: Response) => {
       if (!token) {
         return res.status(200).json({ mfaRequired: true, message: 'MFA token required' });
       }
-      const isValid = authenticator.verifySync({ 
+      const isValid = verifySync({ 
         token, 
         secret: user.totpSecret || '' 
       });
@@ -65,8 +63,8 @@ export const setupMFA = async (req: any, res: Response) => {
     const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    const secret = authenticator.generateSecret();
-    const otpauth = authenticator.generateURI({ 
+    const secret = generateSecret();
+    const otpauth = generateURI({ 
       label: user.email, 
       issuer: 'Moeltiva Admin', 
       secret 
@@ -92,7 +90,7 @@ export const verifyMFA = async (req: any, res: Response) => {
     const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user || !user.totpSecret) return res.status(400).json({ message: 'MFA not setup' });
 
-    const isValid = authenticator.verifySync({ 
+    const isValid = verifySync({ 
       token, 
       secret: user.totpSecret 
     });
