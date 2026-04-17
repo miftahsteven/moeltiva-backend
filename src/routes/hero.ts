@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { getHero, updateHero } from '../controllers/heroController';
-import { authenticateToken, authorizeRole } from '../middleware/auth';
+import { getHero, updateHero } from '../controllers/heroController.js';
+import { authenticateToken, authorizeRole } from '../middleware/auth.js';
 
 const router = Router();
 

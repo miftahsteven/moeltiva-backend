@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import upload from '../utils/upload';
-import { authenticateToken } from '../middleware/auth';
+import upload from '../utils/upload.js';
+import { authenticateToken } from '../middleware/auth.js';
 
 const router = Router();
 

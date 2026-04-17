@@ -1,9 +1,11 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { authenticator } from 'otplib';
-import qrcode from 'qrcode';
+import { TOTP } from 'otplib';
+import * as qrcode from 'qrcode';
 import { PrismaClient } from '@prisma/client';
+
+const authenticator = new TOTP();
 
 export interface AuthRequest extends Request {
   user?: {
@@ -31,7 +33,10 @@ export const login = async (req: Request, res: Response) => {
       if (!token) {
         return res.status(200).json({ mfaRequired: true, message: 'MFA token required' });
       }
-      const isValid = authenticator.check(token, user.totpSecret || '');
+      const isValid = authenticator.verifySync({ 
+        token, 
+        secret: user.totpSecret || '' 
+      });
       if (!isValid) return res.status(401).json({ message: 'Invalid MFA token' });
     }
 
@@ -61,7 +66,11 @@ export const setupMFA = async (req: any, res: Response) => {
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     const secret = authenticator.generateSecret();
-    const otpauth = authenticator.keyuri(user.email, 'Moeltiva Admin', secret);
+    const otpauth = authenticator.generateURI({ 
+      label: user.email, 
+      issuer: 'Moeltiva Admin', 
+      secret 
+    });
     const qrCodeUrl = await qrcode.toDataURL(otpauth);
 
     await prisma.user.update({
@@ -83,7 +92,10 @@ export const verifyMFA = async (req: any, res: Response) => {
     const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user || !user.totpSecret) return res.status(400).json({ message: 'MFA not setup' });
 
-    const isValid = authenticator.check(token, user.totpSecret);
+    const isValid = authenticator.verifySync({ 
+      token, 
+      secret: user.totpSecret 
+    });
     if (!isValid) return res.status(400).json({ message: 'Invalid token' });
 
     await prisma.user.update({
@@ -148,8 +160,9 @@ export const updateUserRole = async (req: AuthRequest, res: Response) => {
   const { role } = req.body;
 
   try {
+    if (!id) return res.status(400).json({ message: 'Invalid ID' });
     const user = await prisma.user.update({
-      where: { id: parseInt(id) },
+      where: { id: parseInt(id as string) },
       data: { role },
       select: { id: true, email: true, role: true }
     });
@@ -163,12 +176,13 @@ export const deleteUser = async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
 
   try {
+    if (!id) return res.status(400).json({ message: 'Invalid ID' });
     // Prevent self-deletion if needed, or just allow it with warning
-    if (req.user?.id === parseInt(id)) {
+    if (req.user?.id === parseInt(id as string)) {
       return res.status(400).json({ message: 'Cannot delete your own account' });
     }
 
-    await prisma.user.delete({ where: { id: parseInt(id) } });
+    await prisma.user.delete({ where: { id: parseInt(id as string) } });
     res.json({ message: 'User deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Failed to delete user', error });
@@ -179,8 +193,9 @@ export const resetUserMFA = async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
 
   try {
+    if (!id) return res.status(400).json({ message: 'Invalid ID' });
     await prisma.user.update({
-      where: { id: parseInt(id) },
+      where: { id: parseInt(id as string) },
       data: {
         totpSecret: null,
         mfaEnabled: false

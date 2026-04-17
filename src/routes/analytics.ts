@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { getVisitorStats, getRealtimeStats } from '../services/analyticsService';
-import { authenticateToken } from '../middleware/auth';
+import { getVisitorStats, getRealtimeStats } from '../services/analyticsService.js';
+import { authenticateToken } from '../middleware/auth.js';
 
 const router = Router();
 

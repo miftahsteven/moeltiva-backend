@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -42,7 +42,8 @@ export const upsertUpgradeItem = async (req: Request, res: Response) => {
 export const deleteUpgradeItem = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    await prisma.upgradeItem.delete({ where: { id: parseInt(id) } });
+    if (!id) return res.status(400).json({ message: 'Invalid ID' });
+    await prisma.upgradeItem.delete({ where: { id: parseInt(id as string) } });
     res.json({ message: 'Upgrade item deleted' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting upgrade item', error });
@@ -64,7 +65,8 @@ export const upsertFaqItem = async (req: Request, res: Response) => {
 export const deleteFaqItem = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    await prisma.fAQItem.delete({ where: { id: parseInt(id) } });
+    if (!id) return res.status(400).json({ message: 'Invalid ID' });
+    await prisma.fAQItem.delete({ where: { id: parseInt(id as string) } });
     res.json({ message: 'FAQ item deleted' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting FAQ item', error });

@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { getFooter, updateFooter } from '../controllers/footerController';
-import { authenticateToken, authorizeRole } from '../middleware/auth';
+import { getFooter, updateFooter } from '../controllers/footerController.js';
+import { authenticateToken, authorizeRole } from '../middleware/auth.js';
 
 const router = Router();
 

@@ -3,18 +3,18 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client';
 
-import authRoutes from './routes/auth';
-import profileRoutes from './routes/profile';
-import heroRoutes from './routes/hero';
-import ingredientRoutes from './routes/ingredient';
-import benefitRoutes from './routes/benefit';
-import productRoutes from './routes/product';
-import faqRoutes from './routes/faq';
-import findUsRoutes from './routes/findUs';
-import footerRoutes from './routes/footer';
-import analyticsRoutes from './routes/analytics';
-import uploadRoutes from './routes/upload';
-import { seedDatabase } from './services/seedService';
+import authRoutes from './routes/auth.js';
+import profileRoutes from './routes/profile.js';
+import heroRoutes from './routes/hero.js';
+import ingredientRoutes from './routes/ingredient.js';
+import benefitRoutes from './routes/benefit.js';
+import productRoutes from './routes/product.js';
+import faqRoutes from './routes/faq.js';
+import findUsRoutes from './routes/findUs.js';
+import footerRoutes from './routes/footer.js';
+import analyticsRoutes from './routes/analytics.js';
+import uploadRoutes from './routes/upload.js';
+import { seedDatabase } from './services/seedService.js';
 
 dotenv.config();
 

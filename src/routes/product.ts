@@ -4,8 +4,8 @@ import {
   updateProductSection, 
   upsertProductStat, 
   deleteProductStat 
-} from '../controllers/productController';
-import { authenticateToken, authorizeRole } from '../middleware/auth';
+} from '../controllers/productController.js';
+import { authenticateToken, authorizeRole } from '../middleware/auth.js';
 
 const router = Router();
 

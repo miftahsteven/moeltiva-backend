@@ -6,8 +6,8 @@ import {
   deleteUpgradeItem,
   upsertFaqItem,
   deleteFaqItem
-} from '../controllers/faqController';
-import { authenticateToken, authorizeRole } from '../middleware/auth';
+} from '../controllers/faqController.js';
+import { authenticateToken, authorizeRole } from '../middleware/auth.js';
 
 const router = Router();
 

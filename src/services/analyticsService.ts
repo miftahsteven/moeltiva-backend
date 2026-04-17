@@ -1,5 +1,9 @@
 import { BetaAnalyticsDataClient } from '@google-analytics/data';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Path to the service account JSON
 const KEY_PATH = path.resolve(__dirname, '../../../backend-panel/golden-toolbox-402704-df5aca509a50.json');

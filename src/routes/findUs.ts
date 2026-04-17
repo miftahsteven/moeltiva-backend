@@ -4,8 +4,8 @@ import {
   updateFindUsSection, 
   upsertPlatformItem, 
   deletePlatformItem 
-} from '../controllers/findUsController';
-import { authenticateToken, authorizeRole } from '../middleware/auth';
+} from '../controllers/findUsController.js';
+import { authenticateToken, authorizeRole } from '../middleware/auth.js';
 
 const router = Router();
 

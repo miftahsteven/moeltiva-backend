@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -41,7 +41,8 @@ export const upsertPlatformItem = async (req: Request, res: Response) => {
 export const deletePlatformItem = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    await prisma.platformItem.delete({ where: { id: parseInt(id) } });
+    if (!id) return res.status(400).json({ message: 'Invalid ID' });
+    await prisma.platformItem.delete({ where: { id: parseInt(id as string) } });
     res.json({ message: 'Platform item deleted' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting platform item', error });

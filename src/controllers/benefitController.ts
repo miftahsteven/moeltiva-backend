@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -41,7 +41,8 @@ export const upsertBenefitItem = async (req: Request, res: Response) => {
 export const deleteBenefitItem = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    await prisma.benefitItem.delete({ where: { id: parseInt(id) } });
+    if (!id) return res.status(400).json({ message: 'Invalid ID' });
+    await prisma.benefitItem.delete({ where: { id: parseInt(id as string) } });
     res.json({ message: 'Item deleted' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting benefit item', error });

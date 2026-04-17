@@ -4,8 +4,8 @@ import {
   updateBenefitSection, 
   upsertBenefitItem, 
   deleteBenefitItem 
-} from '../controllers/benefitController';
-import { authenticateToken, authorizeRole } from '../middleware/auth';
+} from '../controllers/benefitController.js';
+import { authenticateToken, authorizeRole } from '../middleware/auth.js';
 
 const router = Router();
 

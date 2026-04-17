@@ -4,8 +4,8 @@ import {
   updateIngredientSection, 
   upsertIngredientItem, 
   deleteIngredientItem 
-} from '../controllers/ingredientController';
-import { authenticateToken, authorizeRole } from '../middleware/auth';
+} from '../controllers/ingredientController.js';
+import { authenticateToken, authorizeRole } from '../middleware/auth.js';
 
 const router = Router();
 
