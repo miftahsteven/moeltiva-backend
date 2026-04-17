@@ -1,6 +1,6 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client';
 
 import authRoutes from './routes/auth.js';
@@ -16,11 +16,14 @@ import analyticsRoutes from './routes/analytics.js';
 import uploadRoutes from './routes/upload.js';
 import { seedDatabase } from './services/seedService.js';
 
-dotenv.config();
-
 const app = express();
 const prisma = new PrismaClient();
 const PORT = process.env.PORT || 5001;
+
+// Verify ENV loading
+console.log('--- Backend Environment Check ---');
+console.log('JWT_SECRET status:', process.env.JWT_SECRET ? '✅ LOADED' : '❌ NOT LOADED (using fallback)');
+console.log('---------------------------------');
 
 app.use(cors());
 app.use(express.json());

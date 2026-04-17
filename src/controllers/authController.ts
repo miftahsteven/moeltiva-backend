@@ -26,7 +26,8 @@ export const login = async (req: Request, res: Response) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
 
-    // MFA Check
+    /* 
+    // MFA Check (Deactivated per client request)
     if (user.mfaEnabled) {
       if (!token) {
         return res.status(200).json({ mfaRequired: true, message: 'MFA token required' });
@@ -37,6 +38,7 @@ export const login = async (req: Request, res: Response) => {
       });
       if (!isValid) return res.status(401).json({ message: 'Invalid MFA token' });
     }
+    */
 
     const accessToken = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
@@ -46,10 +48,11 @@ export const login = async (req: Request, res: Response) => {
 
     // If MFA is not enabled but required for all users (global policy)
     // We send a success but with a flag that setup is needed
+    // mfaSetupRequired set to false to deactivate global requirement
     res.json({ 
       accessToken, 
       user: { id: user.id, email: user.email, role: user.role, mfaEnabled: user.mfaEnabled },
-      mfaSetupRequired: !user.mfaEnabled 
+      mfaSetupRequired: false 
     });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
