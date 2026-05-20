@@ -49,6 +49,7 @@ async function main() {
       headerCta: '🌿 100% Real Fruit',
       buttonCta: 'Pelajari Lebih Lanjut',
       buyButtonCta: '🛒 Beli Sekarang',
+      buyButtonLink: '#order',
     },
   });
 

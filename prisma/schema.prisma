@@ -54,6 +54,7 @@ model Hero {
   headerCta    String?
   buttonCta    String?
   buyButtonCta String?
+  buyButtonLink String?
 }
 
 model IngredientSection {

@@ -54,6 +54,7 @@ export async function seedDatabase() {
         headerCta: '🌿 100% Real Fruit',
         buttonCta: 'Pelajari Lebih Lanjut',
         buyButtonCta: '🛒 Beli Sekarang',
+        buyButtonLink: '#order',
       },
     });
     logs.push('Hero data created.');
