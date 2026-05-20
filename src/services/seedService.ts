@@ -55,6 +55,8 @@ export async function seedDatabase() {
         buttonCta: 'Pelajari Lebih Lanjut',
         buyButtonCta: '🛒 Beli Sekarang',
         buyButtonLink: '#order',
+        buyButtonBg: '#F6DC43',
+        buyButtonTextColor: '#215737',
       },
     });
     logs.push('Hero data created.');

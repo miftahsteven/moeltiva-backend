@@ -55,6 +55,8 @@ model Hero {
   buttonCta    String?
   buyButtonCta String?
   buyButtonLink String?
+  buyButtonBg   String?
+  buyButtonTextColor String?
 }
 
 model IngredientSection {

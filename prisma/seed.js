@@ -50,6 +50,8 @@ async function main() {
       buttonCta: 'Pelajari Lebih Lanjut',
       buyButtonCta: '🛒 Beli Sekarang',
       buyButtonLink: '#order',
+      buyButtonBg: '#F6DC43',
+      buyButtonTextColor: '#215737',
     },
   });
 
